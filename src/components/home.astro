@@ -46,31 +46,6 @@ const profileImage = await resolveAssetImage(photoUrl);
 ---
 
 <section id="home" class="flex flex-col items-center justify-center section-container md:pt-30 gap-1 min-h-[80vh] text-center">
-  <div class="relative group mb-2 reveal-content" style="animation-delay: 100ms;">
-    <div class="balloon-float w-24 h-24 rounded-full border-2 border-accent overflow-hidden shadow-[0_0_50px_color-mix(in_srgb,var(--color-accent)_33%,transparent)]">
-      <!-- Use Astro Image tag for optimization, fallback to img-->
-      {profileImage ? (
-        <Image
-          src={profileImage}
-          alt={name}
-          width={400}
-          height={400}
-          class="w-full h-full object-cover scale-110"
-          loading="eager"
-        />
-      ) : (
-        <img
-          src={photoUrl || "/placeholder.jpeg"}
-          alt={name}
-          class="w-full h-full object-cover scale-110"
-          onerror="this.onerror=null;this.src='/placeholder.jpeg';"
-          loading="eager"
-        />
-      )}
-    </div>
-    <div class="balloon-float absolute -z-10 top-0 left-0 w-full h-full bg-accent rounded-full blur-[80px] opacity-20"></div>
-  </div>
-
     <div class="reveal-content" style="animation-delay: 200ms;">
     <p class="font-body font-light text-gray leading-relaxed">
       Hello, I'm

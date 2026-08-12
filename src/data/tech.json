@@ -3,7 +3,7 @@
     {
       "title": "Frontend",
       "skills": [
-        { "name": "React", "level": 3, "icon": "skill-icons:react-dark" },
+        { "name": "Angular", "level": 3, "icon": "skill-icons:angular-dark" },
         { "name": "Next.js", "level": 2, "icon": "skill-icons:nextjs-dark" },
         { "name": "TypeScript", "level": 3, "icon": "skill-icons:typescript" },
         { "name": "JavaScript", "level": 3, "icon": "skill-icons:javascript" },
@@ -17,6 +17,7 @@
       "title": "Backend & Tools",
       "skills": [
         { "name": "Node.js", "level": 3, "icon": "skill-icons:nodejs-dark" },
+        { "name": ".NET", "level": 3, "icon": "skill-icons:dotnet" },
         { "name": "Express", "level": 2, "icon": "skill-icons:expressjs-dark" },
         { "name": "Docker", "level": 2, "icon": "skill-icons:docker" },
         { "name": "Git", "level": 3, "icon": "skill-icons:git" }
@@ -25,9 +26,9 @@
     {
       "title": "Database",
       "skills": [
-        { "name": "PostgreSQL", "level": 2, "icon": "skill-icons:postgresql-dark" },
+        { "name": "PostgreSQL", "level": 3, "icon": "skill-icons:postgresql-dark" },
         { "name": "MongoDB", "level": 2, "icon": "skill-icons:mongodb" },
-        { "name": "SQLite", "level": 3, "icon": "skill-icons:sqlite" }
+        { "name": "MySQL", "level": 3, "icon": "skill-icons:mysql-dark" }
       ]
     }
   ]

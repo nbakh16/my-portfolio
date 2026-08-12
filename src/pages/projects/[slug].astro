@@ -1,0 +1,184 @@
+---
+import { Icon } from 'astro-icon/components';
+import Layout from '../../layouts/Layout.astro';
+import ThemeToggle from '../../components/theme-toggle.astro';
+import ProjectGallery from '../../components/project-gallery.astro';
+import Footer from '../../components/footer.astro';
+import { getProjects, type Project } from '../../utils/projects';
+import { resolveProjectGallery } from '../../utils/images';
+import profile from '../../data/home.json';
+
+export async function getStaticPaths() {
+  return getProjects().map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+interface Props {
+  project: Project;
+}
+
+const { project } = Astro.props;
+
+const gallery = await resolveProjectGallery(project.slug);
+
+const hasLink = Boolean(project.link && project.link !== '#');
+const hasRepo = Boolean(project.repoUrl && project.repoUrl !== '#');
+
+const categoryColors: Record<string, string> = {
+  'Professional Project':      'text-sky-400 bg-sky-400/10 border-sky-400/20',
+  'Academic / Thesis Project': 'text-amber-400 bg-amber-400/10 border-amber-400/20',
+  'Personal Project':          'text-emerald-400 bg-emerald-400/10 border-emerald-400/20',
+  'Published App':             'text-violet-400 bg-violet-400/10 border-violet-400/20',
+};
+const categoryClass = categoryColors[project.category] ?? 'text-accent bg-accent/10 border-accent/20';
+
+const platformLabels: Record<string, string> = {
+  android:   'Android',
+  'apple-ios': 'iOS',
+  windows:   'Windows',
+  web:       'Web',
+  linux:     'Linux',
+  macos:     'macOS',
+};
+---
+
+<Layout
+  title={`${project.title} | ${profile.name}`}
+  personName={profile.name}
+  description={project.description}
+  jobTitle={profile.jobTitle}
+  keywords={`${project.title}, ${project.tech.join(', ')}, ${profile.name}`}
+  siteUrl={new URL(`/projects/${project.slug}/`, profile.siteUrl).href}
+  ogImageUrl={profile.ogImageUrl}
+  twitterHandle={profile.twitterHandle}
+  lang={profile.lang}
+  socials={profile.socials}
+>
+  <div id="theme-toggle-wrapper" class="fixed top-4 right-4 z-50">
+    <ThemeToggle />
+  </div>
+
+  <article class="section-container">
+    <a
+      href="/#projects"
+      class="inline-flex items-center gap-2 text-sm font-body text-subtext hover:text-accent transition-colors duration-300"
+    >
+      <Icon name="mdi:arrow-left" class="w-4 h-4" />
+      Back to projects
+    </a>
+
+    <!-- Hero -->
+    <header class="mt-8">
+      <span class={`inline-block text-[10px] uppercase tracking-widest font-bold px-2 py-0.5 rounded-full border ${categoryClass}`}>
+        {project.category}
+      </span>
+      <h1 class="text-3xl md:text-5xl font-heading font-bold text-maintext mt-3">
+        {project.title}
+      </h1>
+      {project.tagline && (
+        <p class="text-subtext font-body text-base md:text-lg mt-3 max-w-2xl">{project.tagline}</p>
+      )}
+
+      <!-- Meta row -->
+      <dl class="flex flex-wrap gap-x-8 gap-y-3 mt-8 pt-6 border-t border-accent/10">
+        {project.period && (
+          <div>
+            <dt class="text-[10px] uppercase tracking-widest font-bold text-accent/60 font-body">Period</dt>
+            <dd class="text-sm text-maintext font-body mt-1">{project.period}</dd>
+          </div>
+        )}
+        {project.role && (
+          <div>
+            <dt class="text-[10px] uppercase tracking-widest font-bold text-accent/60 font-body">Role</dt>
+            <dd class="text-sm text-maintext font-body mt-1">{project.role}</dd>
+          </div>
+        )}
+        {project.platforms.length > 0 && (
+          <div>
+            <dt class="text-[10px] uppercase tracking-widest font-bold text-accent/60 font-body">Platforms</dt>
+            <dd class="text-sm text-maintext font-body mt-1">
+              {project.platforms.map((p) => platformLabels[p] ?? p).join(' · ')}
+            </dd>
+          </div>
+        )}
+      </dl>
+
+      <!-- Tech tags -->
+      <div class="flex flex-wrap gap-2 mt-6">
+        {project.tech.map((t) => (
+          <span class="rounded-md text-xs px-3 py-1 bg-accent/5 border border-accent/10 text-accent/80">
+            {t}
+          </span>
+        ))}
+      </div>
+
+      <!-- External links -->
+      {(hasLink || hasRepo) && (
+        <div class="flex flex-wrap gap-3 mt-6">
+          {hasLink && (
+            <a
+              href={project.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-accent/20 text-accent/80 hover:text-accent hover:border-accent/60 hover:bg-accent/5 transition-all duration-300 text-xs font-body font-semibold tracking-wide"
+            >
+              <Icon name="mdi:open-in-new" class="w-4 h-4" />
+              Visit live site
+            </a>
+          )}
+          {hasRepo && (
+            <a
+              href={project.repoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-accent/20 text-accent/80 hover:text-accent hover:border-accent/60 hover:bg-accent/5 transition-all duration-300 text-xs font-body font-semibold tracking-wide"
+            >
+              <Icon name="mdi:github" class="w-4 h-4" />
+              View source
+            </a>
+          )}
+        </div>
+      )}
+    </header>
+
+    <!-- Long-form content -->
+    <div class="mt-16 max-w-3xl flex flex-col gap-12">
+      {project.sections?.map((section) => (
+        <section>
+          <h2 class="text-2xl md:text-3xl font-heading font-bold text-maintext mb-4 flex items-center gap-3">
+            <span class="text-accent">/</span> {section.heading}
+          </h2>
+          {section.body?.map((paragraph) => (
+            <p class="text-subtext font-body text-sm md:text-base leading-relaxed mb-4">{paragraph}</p>
+          ))}
+          {section.list && (
+            <ul class="flex flex-col gap-3 mt-2">
+              {section.list.map((item) => (
+                <li class="flex gap-3 text-subtext font-body text-sm md:text-base leading-relaxed">
+                  <Icon name="mdi:chevron-right" class="w-5 h-5 shrink-0 text-accent mt-0.5" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+      ))}
+    </div>
+
+    <ProjectGallery images={gallery} captions={project.captions} title={project.title} />
+
+    <div class="mt-16 pt-8 border-t border-accent/10">
+      <a
+        href="/#projects"
+        class="inline-flex items-center gap-2 text-sm font-body text-subtext hover:text-accent transition-colors duration-300"
+      >
+        <Icon name="mdi:arrow-left" class="w-4 h-4" />
+        Back to projects
+      </a>
+    </div>
+  </article>
+
+  <Footer />
+</Layout>

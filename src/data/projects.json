@@ -1,20 +1,116 @@
 [
   {
-    "title": "Awesome Website",
-    "description": "A high-performance, SEO-optimized web application built with modern frameworks to showcase technical expertise.",
-    "images": ["astro-01.webp", "astro-02.jpeg"],
-    "tech": ["Astro", "Tailwind"],
-    "platforms": ["web"],
-    "link": "https://astro.build/themes/details/career-portfolio-data-driven-astro-ssg/",
-    "category": "Published Website"
+    "_comment": "slug = folder name under src/assets/projects/ AND the URL segment (/projects/<slug>/). Drop screenshots in that folder — see src/assets/projects/README.md. 'link' and 'repoUrl' are optional: leave them empty to hide the button.",
+    "slug": "plantitapp",
+    "title": "PlantitApp",
+    "tagline": "Identify, organize and keep your plants alive — with a community behind you.",
+    "description": "University thesis project: a plant care platform that identifies species with AI, tracks each plant's health history, sends care reminders and connects users with a community and local nurseries.",
+    "category": "Academic / Thesis Project",
+    "period": "2025",
+    "role": "Full-stack developer · Scrum team member",
+    "tech": ["Angular", "Ionic", "Express", "Supabase", "TypeScript"],
+    "platforms": ["web", "android"],
+    "link": "",
+    "repoUrl": "",
+    "sections": [
+      {
+        "heading": "Overview",
+        "body": [
+          "A lot of people want plants at home — for the wellbeing, for the space, for the connection with nature. What stops them is not the buying, it is the keeping: every species needs something different, and urban life leaves little time to figure out what. The usual outcome is a dead plant and a frustrated owner.",
+          "PlantitApp was built as the educational and organizational tool that closes that gap. It identifies a species from a photo, explains what that particular plant needs, keeps a health record for it, and reminds its owner when to act — regardless of how much the owner knows about botany.",
+          "It was developed as my Information Systems Engineering thesis project at UTN Facultad Regional Córdoba, as a team, from problem definition through to a working product."
+        ]
+      },
+      {
+        "heading": "My role & how we worked",
+        "body": [
+          "I worked as a full-stack developer on the team and, like everyone else, took my turn as Scrum Master — the role rotated deliberately so all of us gained project-management experience rather than just one person.",
+          "We ran Scrum with 15-day sprints. A Sprint Zero set the ground rules first: roles, ceremonies, artifacts, and shared conventions for documentation, estimation and code. Each sprint opened with a planning session where we pulled items from the Product Backlog and estimated them with Planning Poker, and closed with a review of the increment plus a retrospective. It was the first time this team had worked together, and the framework is what kept that from showing."
+        ]
+      },
+      {
+        "heading": "Key features",
+        "list": [
+          "AI species recognition — point the phone camera at a plant, identify it, and add it straight to a personal collection.",
+          "Per-plant health history — a log of waterings, pruning, fertilizing and illnesses, plus a preliminary diagnosis that suggests likely diseases from visible symptoms.",
+          "Personalized care recommendations — watering, light and general care derived from the species, location and environmental conditions rather than generic advice.",
+          "Care reminders — notifications for watering, fertilizing and check-ups, either across the whole collection or tuned per species.",
+          "Communities — themed spaces to share experiences, trade cuttings and ask questions, with moderation tools to keep them safe and collaborative.",
+          "Nurseries and service providers — an interactive map to find them nearby, browse their profiles and catalogues, contact them directly and rate them afterwards."
+        ]
+      },
+      {
+        "heading": "Results & what I took from it",
+        "body": [
+          "What separates PlantitApp from the identify-only apps is that identification is the entry point, not the product. Around it sits the part that actually keeps plants alive: an organized collection, a health record over time, care adapted to the specific plant, other people to ask, and the local shops and services to reach for.",
+          "The honest limitation is recognition accuracy. It holds up well on clear photos, and degrades with poor lighting, bad framing, or species that genuinely look alike — which is exactly why the symptom-based diagnosis is presented as a preliminary suggestion and not a verdict.",
+          "Beyond the code, this was my first project run end to end under a real agile process: rotating the Scrum Master role, estimating as a group, and shipping an increment every two weeks taught me as much as the stack did."
+        ]
+      }
+    ],
+    "captions": {}
   },
   {
-    "title": "Demo Mobile App",
-    "description": "A high-performance mobile application built with modern frameworks to showcase technical expertise.",
-    "images": ["astro-02.jpeg", "#"],
-    "tech": ["Flutter", "Dart", "REST API"],
-    "platforms": ["apple-ios", "android"],
-    "link": "https://github.com/nbakh16/career-portfolio-template",
-    "category": "Hobby"
+    "slug": "my-mind",
+    "title": "My Mind",
+    "tagline": "A therapy management platform where the clinical content is data, not code.",
+    "description": "A two-role therapy management platform: the therapist designs clinical activities, assigns and schedules them, and runs sessions; the patient fills in their records and follows their progress. Activity types are defined as data, so adding one needs no new code.",
+    "category": "Personal Project",
+    "period": "July 2026 – Present",
+    "role": "Solo developer — design, backend and frontend",
+    "tech": ["TypeScript", "Node.js", "PostgreSQL", "JWT", "FullCalendar", "SVG"],
+    "platforms": ["web"],
+    "link": "",
+    "repoUrl": "",
+    "sections": [
+      {
+        "heading": "Overview",
+        "body": [
+          "My Mind is a therapy management platform built around two roles: the therapist and the person in therapy. The therapist admits patients by invitation, designs clinical activities, assigns and schedules them, coordinates sessions and publishes updates. The patient completes their records, sees their calendar and reads those updates.",
+          "It is in active development — the modules described below are built and working, and the work continues."
+        ]
+      },
+      {
+        "heading": "Activities defined as data, not as code",
+        "body": [
+          "This is the design decision the whole project rests on. An activity template does not have a component of its own: it declares its fields in a JSONB schema, the frontend renders any template generically from that schema, and the backend validates submissions against the very same schema. Adding a new kind of clinical activity is a data change — no new components, no second copy of the validation rules to keep in sync."
+        ],
+        "list": [
+          "Field types: text, long text, number, select, star rating and slider scale.",
+          "Template types: tables the patient adds rows to, and radar self-assessments rendered as an SVG hexagon.",
+          "Progress charts for any numeric column with at least two records.",
+          "Charts are hand-written SVG components — no charting library, no heavy dependency.",
+          "Every record carries its own date: the form opens on today but can be backdated, and listings and charts follow that date rather than when it happened to be typed in."
+        ]
+      },
+      {
+        "heading": "Calendar & sessions",
+        "body": [
+          "The calendar is built on FullCalendar with events typed by kind — personal, activity or session — and a single explicit table governing who can see and who can edit each kind. Getting that visibility matrix right was most of the work in this module."
+        ],
+        "list": [
+          "Weekly or biweekly recurring sessions, materialized six months ahead and grouped by a series id, so a change can apply to one date or to the whole series.",
+          "Therapist availability per weekday, painted as a calendar background: it warns when a session falls outside it, without blocking the therapist from doing it anyway.",
+          "Activities scheduled from the patient's own file, with start, end, repetition and cancellation by date or by series.",
+          "Per-person Google Calendar sync: anyone who can see an event can push it to their own calendar, even without permission to edit it."
+        ]
+      },
+      {
+        "heading": "Accounts & access",
+        "list": [
+          "Authentication with bcrypt password hashing and JWT in an httpOnly cookie, with ADMIN and PATIENT roles.",
+          "Self-registration gated by single-use invitation codes that expire after seven days, plus email confirmation.",
+          "Google Sign-In behind a feature flag — new accounts still require an invitation code.",
+          "Editable profiles, and an admin path to create users directly with a role selector."
+        ]
+      },
+      {
+        "heading": "Updates feed",
+        "body": [
+          "The therapist publishes posts with a title, body and image. A separate tab pulls curated external content over RSS, showing only the title, a preview and a link to the original — refreshing sources that have gone stale rather than on every page view."
+        ]
+      }
+    ],
+    "captions": {}
   }
 ]

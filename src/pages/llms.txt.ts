@@ -1,8 +1,8 @@
 import type { APIRoute } from 'astro';
 import localHomeData from '../data/home.json';
 import localCareerData from '../data/career.json';
-import localProjectsData from '../data/projects.json';
 import localTechData from '../data/tech.json';
+import { getProjects } from '../utils/projects';
 
 export const GET: APIRoute = async () => {
   const isApiLive = import.meta.env.PROD;
@@ -10,7 +10,8 @@ export const GET: APIRoute = async () => {
 
   let home = localHomeData;
   let career = localCareerData;
-  let projects = localProjectsData;
+  // If the remote API is used, its /projects payload must match the schema in src/utils/projects.ts
+  let projects: any[] = getProjects();
   let tech = localTechData;
 
   if (isApiLive && BASE_URL) {
@@ -46,7 +47,14 @@ export const GET: APIRoute = async () => {
 
   const projectsStr = Array.isArray(projects)
     ? projects
-        .map((proj: any) => `- **${proj.title}:** ${proj.description}${proj.link ? ` (${proj.link})` : ''}`)
+        .map((proj: any) => {
+          const links = [
+            proj.slug ? `Case study: ${siteUrl}/projects/${proj.slug}/` : '',
+            proj.link ? `Live: ${proj.link}` : '',
+            proj.repoUrl ? `Source: ${proj.repoUrl}` : '',
+          ].filter(Boolean);
+          return `- **${proj.title}:** ${proj.description}${links.length ? `\n  * ${links.join(' | ')}` : ''}`;
+        })
         .join('\n')
     : '';
 

@@ -1,23 +1,29 @@
 ---
 import { Icon } from 'astro-icon/components';
-const { project } = Astro.props;
 import { Image } from 'astro:assets';
-import { resolveAssetImage } from '../utils/images';
+import { resolveAssetImage, resolveProjectGallery } from '../utils/images';
+import type { Project } from '../utils/projects';
 
-// Map through the array of image strings from project JSON
-const optimizedImages = await Promise.all(
-  project.images.map(async (imgName: string) => {
-    return await resolveAssetImage(imgName);
-  })
-);
+interface Props {
+  project: Project;
+}
 
-const validImages = optimizedImages.filter(Boolean);
-const isSlider = validImages.length > 1;
+const { project } = Astro.props;
+
+// Cover image: the explicit override if set, otherwise the first screenshot in the project folder
+const gallery = await resolveProjectGallery(project.slug);
+const coverImage = project.cover
+  ? await resolveAssetImage(`projects/${project.slug}/${project.cover}`)
+  : (gallery[0]?.src ?? null);
+
+const hasLink = Boolean(project.link && project.link !== '#');
+const hasRepo = Boolean(project.repoUrl && project.repoUrl !== '#');
 
 const categoryColors: Record<string, string> = {
-  'Professional Project': 'text-sky-400 bg-sky-400/10 border-sky-400/20',
-  'Published App':        'text-emerald-400 bg-emerald-400/10 border-emerald-400/20',
-  'Game Dev / Hobby':     'text-violet-400 bg-violet-400/10 border-violet-400/20',
+  'Professional Project':      'text-sky-400 bg-sky-400/10 border-sky-400/20',
+  'Academic / Thesis Project': 'text-amber-400 bg-amber-400/10 border-amber-400/20',
+  'Personal Project':          'text-emerald-400 bg-emerald-400/10 border-emerald-400/20',
+  'Published App':             'text-violet-400 bg-violet-400/10 border-violet-400/20',
 };
 const categoryClass = categoryColors[project.category] ?? 'text-accent bg-accent/10 border-accent/20';
 
@@ -44,25 +50,21 @@ const platformIconMap: Record<string, string> = {
 
   <!-- Image area -->
   <div class="aspect-video overflow-hidden relative bg-background/50 shrink-0">
-    <div class={`w-full h-full relative ${isSlider ? 'image-slider' : ''}`}>
-      {
-        validImages.length > 0 ? (
-          validImages.map((imgMetadata, index) => (
-            <Image
-              src={imgMetadata}
-              alt={`${project.title}`}
-              class={`absolute inset-0 w-full h-full object-cover transition-all duration-1000 group-hover:scale-110 ${index === 0 ? 'opacity-100 z-0' : 'opacity-0 z-[-1]'}`}
-            />
-          ))
-        ) : (
-          <img
-            src="/placeholder.jpeg"
-            alt={`${project.title} placeholder`}
-            class="absolute inset-0 w-full h-full object-cover transition-all duration-1000 group-hover:scale-110"
-          />
-        )
-      }
-    </div>
+    {
+      coverImage ? (
+        <Image
+          src={coverImage}
+          alt={`${project.title}`}
+          class="absolute inset-0 w-full h-full object-cover transition-all duration-1000 group-hover:scale-110"
+        />
+      ) : (
+        <img
+          src="/placeholder.jpeg"
+          alt={`${project.title} placeholder`}
+          class="absolute inset-0 w-full h-full object-cover transition-all duration-1000 group-hover:scale-110"
+        />
+      )
+    }
 
     <!-- Platform icons -->
     <div class="absolute top-3 right-3 flex gap-2 z-20">
@@ -75,17 +77,6 @@ const platformIconMap: Record<string, string> = {
         </div>
       ))}
     </div>
-
-    <!-- Slider dot indicators -->
-    {isSlider && (
-      <div class="slider-dots absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-30">
-        {validImages.map((_: unknown, i: number) => (
-          <span
-            class={`slider-dot block rounded-full transition-all duration-400 ${i === 0 ? 'w-4 h-1.5 bg-white' : 'w-1.5 h-1.5 bg-white/40'}`}
-          />
-        ))}
-      </div>
-    )}
   </div>
 
   <!-- Card body -->
@@ -110,58 +101,44 @@ const platformIconMap: Record<string, string> = {
       ))}
     </div>
 
-    <!-- View Project Button -->
+    <!-- Case Study Button -->
     <a
-      href={project.link}
-      target="_blank"
+      href={`/projects/${project.slug}/`}
       class="mt-1 flex items-center justify-center gap-2 w-full py-2 rounded-lg border border-accent/20 text-accent/70 hover:text-accent hover:border-accent/60 hover:bg-accent/5 transition-all duration-300 text-xs font-body font-semibold tracking-wide"
     >
-      View Project
+      View case study
       <Icon name="mdi:arrow-right" class="w-3.5 h-3.5" />
     </a>
+
+    <!-- Secondary external links -->
+    {(hasLink || hasRepo) && (
+      <div class="flex items-center justify-center gap-5">
+        {hasLink && (
+          <a
+            href={project.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-1.5 text-[11px] font-body text-subtext hover:text-accent transition-colors duration-300"
+          >
+            <Icon name="mdi:open-in-new" class="w-3.5 h-3.5" />
+            Live site
+          </a>
+        )}
+        {hasRepo && (
+          <a
+            href={project.repoUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-1.5 text-[11px] font-body text-subtext hover:text-accent transition-colors duration-300"
+          >
+            <Icon name="mdi:github" class="w-3.5 h-3.5" />
+            Source
+          </a>
+        )}
+      </div>
+    )}
   </div>
 </div>
-
-<script>
-  function initSliders() {
-    const sliders = document.querySelectorAll('.image-slider');
-
-    sliders.forEach(slider => {
-      const images = slider.querySelectorAll('img');
-      if (images.length <= 1) return;
-
-      const card = slider.closest('.project-card');
-      const dots = card ? card.querySelectorAll('.slider-dot') : [];
-
-      let currentIndex = 0;
-
-      function goTo(next: number) {
-        images[currentIndex].classList.remove('opacity-100', 'z-0');
-        images[currentIndex].classList.add('opacity-0', 'z-[-1]');
-        if (dots[currentIndex]) {
-          dots[currentIndex].classList.remove('w-4', 'bg-white');
-          dots[currentIndex].classList.add('w-1.5', 'bg-white/40');
-        }
-
-        currentIndex = next;
-
-        images[currentIndex].classList.remove('opacity-0', 'z-[-1]');
-        images[currentIndex].classList.add('opacity-100', 'z-0');
-        if (dots[currentIndex]) {
-          dots[currentIndex].classList.remove('w-1.5', 'bg-white/40');
-          dots[currentIndex].classList.add('w-4', 'bg-white');
-        }
-      }
-
-      setInterval(() => {
-        goTo((currentIndex + 1) % images.length);
-      }, 3500);
-    });
-  }
-
-  initSliders();
-  document.addEventListener('astro:after-swap', () => { initSliders(); });
-</script>
 
 <style is:global>
   .project-card {
@@ -179,10 +156,5 @@ const platformIconMap: Record<string, string> = {
     opacity: 1 !important;
     visibility: visible !important;
     transform: translateY(0) !important;
-  }
-
-  /* Slider dot pill transition */
-  .slider-dot {
-    transition: width 0.4s ease, background-color 0.4s ease;
   }
 </style>

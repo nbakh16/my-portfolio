@@ -1,17 +1,17 @@
 {
-  "name": "John Doe",
+  "name": "Sebastian Carrera",
   "photoUrl": "favicon.svg",
-  "location": "City, Country",
+  "location": "Córdoba, Argentina",
   "availability": "Available for hire",
-  "description": "A brief, compelling introduction about who you are and what you do. Mention your core philosophy, your passion for building digital products, and your drive for creating efficient, high-impact solutions.",
-  "descriptionHtml": "A brief, compelling introduction about who you are and what you do. Mention your core <span class='text-accent font-bold'>philosophy</span>, your passion for building digital products, and your drive for creating <span class='text-accent font-bold'>efficient</span>, <span class='text-accent font-bold'>high-impact</span> solutions.",
-  "webpageTitle": "John Doe | Lead Software Engineer",
-  "resumeUrl": "https://example-files.online-convert.com/document/pdf/example.pdf",
+  "description": "Information Systems Engineer with full-stack development experience (Angular, Node.js, .NET). Focused on Oracle database administration, design, and performance tuning: diagnosing and resolving performance bottlenecks (indexing, execution plans, query rewriting) that significantly reduced production response times. Recent experience integrating generative AI tools (MCP protocol) into development workflows, with access control and security best practices. Analytical, methodical, and self-driven, focused on continuous improvement of processes and systems.",
+  "descriptionHtml": "Information Systems Engineer with full-stack development experience (Angular, Node.js, .NET). Focused on Oracle database administration, design, and performance tuning. Recent experience integrating generative AI tools (MCP protocol) into development workflows, with access control and security best practices. Analytical, methodical, and self-driven, focused on continuous improvement of processes and systems.",
+  "webpageTitle": "Sebastian Carrera| Software Engineer",
+  "resumeUrl": "https://drive.google.com/file/d/13rMVrdfLokcKBj7WrESlpoMXWzuK7BL1/view?usp=drive_link",
 
   "_seo_comment": "SEO fields — update these along with your personal info for best search engine visibility.",
-  "jobTitle": "Lead Software Engineer",
-  "keywords": "John Doe, software engineer, Flutter, FastAPI, mobile development, portfolio",
-  "siteUrl": "https://your-domain.com",
+  "jobTitle": "Software Engineer - Full-stack Developer",
+  "keywords": "Sebastian Carrera, software engineer, Flutter, FastAPI, mobile development, portfolio",
+  "siteUrl": "https://Carrera-Sebastian.github.io",
   "lang": "en",
   "twitterHandle": "",
   "ogImageUrl": "/placeholder.jpeg",
@@ -20,14 +20,14 @@
   "socials": [
     {
       "name": "GitHub",
-      "url": "https://github.com/[YOUR_USER_NAME]",
+      "url": "https://github.com/Carrera-Sebastian",
       "icon": "mdi:github",
       "label": "View Profile",
       "showInContact": true
     },
     {
       "name": "LinkedIn",
-      "url": "https://linkedin.com/in/[YOUR_USER_NAME]",
+      "url": "linkedin.com/in/sebastian-carrera-zanetta",
       "icon": "mdi:linkedin",
       "label": "Connect",
       "showInContact": true
@@ -48,45 +48,10 @@
     },
     {
       "name": "Email",
-      "url": "mailto:your-mail@example.com",
+      "url": "mailto:sebaluca.carrera@gmail.com",
       "icon": "mdi:email",
       "label": "Send Email",
       "showInContact": true
-    },
-    {
-      "name": "WhatsApp",
-      "url": "https://wa.me/[YOUR_WHATSAPP_NUMBER]",
-      "icon": "mdi:whatsapp",
-      "label": "Send Message",
-      "showInContact": true
-    },
-    {
-      "name": "Facebook",
-      "url": "#",
-      "icon": "mdi:facebook",
-      "label": "View Profile",
-      "showInContact": false
-    },
-    {
-      "name": "Messenger",
-      "url": "#",
-      "icon": "mdi:facebook-messenger",
-      "label": "Send Message",
-      "showInContact": true
-    },
-    {
-      "name": "Instagram",
-      "url": "#",
-      "icon": "mdi:instagram",
-      "label": "View Profile",
-      "showInContact": false
-    },
-    {
-      "name": "Twitter",
-      "url": "#",
-      "icon": "mdi:twitter",
-      "label": "View Profile",
-      "showInContact": false
     }
   ]
 }

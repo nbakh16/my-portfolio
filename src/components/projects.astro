@@ -1,6 +1,8 @@
 ---
 import ProjectCard from './project-card.astro';
-import projectsData from '../data/projects.json';
+import { getProjects } from '../utils/projects';
+
+const projectsData = getProjects();
 ---
 
 <section id="projects" class="section-container overflow-hidden">
@@ -10,7 +12,7 @@ import projectsData from '../data/projects.json';
           <span class="text-accent">/</span> Featured Projects
         </h2>
       <p class="text-subtext font-body text-sm max-w-md">
-        A selection of professional work, published apps, and experimental prototypes.
+        Projects I built end to end. Open a case study for the full write-up and screenshots.
       </p>
     </div>
 
