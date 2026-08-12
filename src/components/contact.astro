@@ -43,7 +43,7 @@ import localData from '../data/home.json';
         })}
       </div>
 
-      <p class="text-center text-subtext text-xs font-body pt-2">
+      <p class="contact-preferred opacity-0 text-center text-subtext text-xs font-body pt-2">
         Preferred: <span class="text-accent/80">Email</span> or <span class="text-accent/80">LinkedIn</span> — I typically respond within 24 hours.
       </p>
     </div>
@@ -63,9 +63,16 @@ import localData from '../data/home.json';
     transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
+  /* Preferred Text Initial State */
+  .contact-preferred {
+    transform: translateY(20px);
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
   /* Shared Revealed State */
   .contact-header.reveal,
-  .contact-card.reveal {
+  .contact-card.reveal,
+  .contact-preferred.reveal {
     opacity: 1 !important;
     transform: translateY(0) scale(1);
   }
@@ -75,6 +82,9 @@ import localData from '../data/home.json';
   const revealContact = () => {
     const header = document.querySelector('.contact-header');
     const cards = document.querySelectorAll('.contact-card');
+    const preferred = document.querySelector('.contact-preferred');
+    const cardIndexMap = new Map<Element, number>();
+    cards.forEach((card, i) => cardIndexMap.set(card, i));
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -82,10 +92,15 @@ import localData from '../data/home.json';
           const target = entry.target as HTMLElement;
 
           if (target.classList.contains('contact-card')) {
-            const index = Array.from(cards).indexOf(target);
+            const index = cardIndexMap.get(target) ?? 0;
             setTimeout(() => {
               target.classList.add('reveal');
             }, (index % 4) * 150);
+          } else if (target.classList.contains('contact-preferred')) {
+            const delay = cards.length > 0 ? cards.length * 150 : 200;
+            setTimeout(() => {
+              target.classList.add('reveal');
+            }, delay);
           } else {
             target.classList.add('reveal');
           }
@@ -100,6 +115,7 @@ import localData from '../data/home.json';
 
     if (header) observer.observe(header);
     cards.forEach(card => observer.observe(card));
+    if (preferred) observer.observe(preferred);
   }
 
   window.addEventListener('load', revealContact);

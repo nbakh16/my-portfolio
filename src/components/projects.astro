@@ -50,6 +50,8 @@ import projectsData from '../data/projects.json';
   const initProjectReveal = () => {
     const header = document.querySelector('.project-header');
     const cards = document.querySelectorAll('.project-card');
+    const cardIndexMap = new Map<Element, number>();
+    cards.forEach((card, i) => cardIndexMap.set(card, i));
     
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
@@ -63,7 +65,7 @@ import projectsData from '../data/projects.json';
           } 
           // Check if the intersecting element is a project card
           else if (target.classList.contains('project-card')) {
-            const index = Array.from(cards).indexOf(target);
+            const index = cardIndexMap.get(target) ?? 0;
             
             // Stagger effect based on row position (only for cards)
             setTimeout(() => {

@@ -203,11 +203,13 @@ const getItemMeta = (type: string) => {
 <script>
   function revealCards() {
     const cards = document.querySelectorAll('.scroll-stat');
+    const cardIndexMap = new Map<Element, number>();
+    cards.forEach((card, i) => cardIndexMap.set(card, i));
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          const index = Array.from(cards).indexOf(entry.target);
+          const index = cardIndexMap.get(entry.target) ?? 0;
           setTimeout(() => {
             entry.target.classList.add('reveal');
           }, (index % 2) * 150);
