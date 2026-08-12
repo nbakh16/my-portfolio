@@ -123,7 +123,12 @@ const platformIconMap: Record<string, string> = {
 </div>
 
 <script>
+  const activeSliderIntervals: ReturnType<typeof setInterval>[] = [];
+
   function initSliders() {
+    activeSliderIntervals.forEach(clearInterval);
+    activeSliderIntervals.length = 0;
+
     const sliders = document.querySelectorAll('.image-slider');
 
     sliders.forEach(slider => {
@@ -153,9 +158,11 @@ const platformIconMap: Record<string, string> = {
         }
       }
 
-      setInterval(() => {
+      const id = setInterval(() => {
         goTo((currentIndex + 1) % images.length);
       }, 3500);
+
+      activeSliderIntervals.push(id);
     });
   }
 
