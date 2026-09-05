@@ -83,6 +83,8 @@ import localData from '../data/home.json';
     const header = document.querySelector('.contact-header');
     const cards = document.querySelectorAll('.contact-card');
     const preferred = document.querySelector('.contact-preferred');
+    const cardIndexMap = new Map<Element, number>();
+    cards.forEach((card, i) => cardIndexMap.set(card, i));
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -90,7 +92,7 @@ import localData from '../data/home.json';
           const target = entry.target as HTMLElement;
 
           if (target.classList.contains('contact-card')) {
-            const index = Array.from(cards).indexOf(target);
+            const index = cardIndexMap.get(target) ?? 0;
             setTimeout(() => {
               target.classList.add('reveal');
             }, (index % 4) * 150);

@@ -35,37 +35,10 @@
 </style>
 
 <script>
+  import { toggleTheme } from '../utils/theme';
+
   const themeToggle = document.getElementById('theme-toggle');
-
   themeToggle?.addEventListener('click', () => {
-    // Suppress all transitions for the duration of the theme switch.
-    // This prevents every card, button, and nav link from firing their
-    // CSS transitions simultaneously — the main source of iOS Safari jank.
-    const noTransition = document.createElement('style');
-    noTransition.textContent = '*,*::before,*::after{transition:none!important}';
-    document.head.appendChild(noTransition);
-
-    const currentTheme = document.documentElement.getAttribute('data-theme') || 'default-dark';
-    const isDark = currentTheme.endsWith('-dark');
-    const newTheme = isDark
-      ? currentTheme.replace('-dark', '-light')
-      : currentTheme.replace('-light', '-dark');
-
-    document.documentElement.setAttribute('data-theme', newTheme);
-    localStorage.setItem('theme', newTheme);
-
-    // Double rAF: first frame queues the paint, second confirms it's committed.
-    // Only then do we remove the suppression so hover transitions work again.
-    requestAnimationFrame(() => {
-      // Update iOS status bar mode
-      const meta = document.getElementById('theme-color-meta');
-      if (meta) {
-        meta.setAttribute('content', newTheme.endsWith('-dark') ? '#000000' : '#FFFFFF');
-      }
-
-      requestAnimationFrame(() => {
-        document.head.removeChild(noTransition);
-      });
-    });
+    toggleTheme();
   });
 </script>
